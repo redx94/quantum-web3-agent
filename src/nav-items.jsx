@@ -1,7 +1,8 @@
-import { HomeIcon, AtomIcon, BoxIcon, GlobeIcon, CodeIcon, BrainCircuitIcon, CloudIcon, RobotIcon } from "lucide-react";
+import { HomeIcon, AtomIcon, BoxIcon, GlobeIcon, CodeIcon, BrainCircuitIcon, CloudIcon, BotIcon, WrenchIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import Resources from "./pages/Resources.jsx";
 import ChatInterface from "./components/ChatInterface.jsx";
+import SoftwareBuilder from "./components/SoftwareBuilder.jsx";
 
 /**
  * Central place for defining the navigation items. Used for navigation components and routing.
@@ -12,6 +13,12 @@ export const navItems = [
     to: "/",
     icon: <HomeIcon className="h-4 w-4" />,
     page: <Index />,
+  },
+  {
+    title: "Software Builder",
+    to: "/builder",
+    icon: <WrenchIcon className="h-4 w-4" />,
+    page: <SoftwareBuilder />,
   },
   {
     title: "Quantum Computing",
@@ -46,7 +53,7 @@ export const navItems = [
   {
     title: "Auto Agents & Chatbots",
     to: "/agents",
-    icon: <RobotIcon className="h-4 w-4" />,
+    icon: <BotIcon className="h-4 w-4" />,
     page: <ChatInterface domain="Auto Agents & Chatbots" />,
   },
   {
