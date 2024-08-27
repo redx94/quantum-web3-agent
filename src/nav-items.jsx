@@ -1,4 +1,4 @@
-import { HomeIcon, BookOpenIcon } from "lucide-react";
+import { HomeIcon, AtomIcon, CubeIcon, GlobeIcon, CodeIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import Resources from "./pages/Resources.jsx";
 
@@ -13,9 +13,27 @@ export const navItems = [
     page: <Index />,
   },
   {
-    title: "Resources",
-    to: "/resources",
-    icon: <BookOpenIcon className="h-4 w-4" />,
+    title: "Quantum Computing",
+    to: "/quantum",
+    icon: <AtomIcon className="h-4 w-4" />,
+    page: <Resources />,
+  },
+  {
+    title: "Blockchain",
+    to: "/blockchain",
+    icon: <CubeIcon className="h-4 w-4" />,
+    page: <Resources />,
+  },
+  {
+    title: "Web3",
+    to: "/web3",
+    icon: <GlobeIcon className="h-4 w-4" />,
+    page: <Resources />,
+  },
+  {
+    title: "Code Generator",
+    to: "/generator",
+    icon: <CodeIcon className="h-4 w-4" />,
     page: <Resources />,
   },
 ];
