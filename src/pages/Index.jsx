@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AtomIcon, CubeIcon, GlobeIcon } from 'lucide-react';
+import { AtomIcon, BoxIcon, GlobeIcon } from 'lucide-react';
 
 const TechnologyCard = ({ icon, title, description, action }) => (
   <Card className="w-full">
@@ -38,7 +38,7 @@ const Index = () => {
             action="Explore Quantum"
           />
           <TechnologyCard
-            icon={<CubeIcon className="h-6 w-6" />}
+            icon={<BoxIcon className="h-6 w-6" />}
             title="Blockchain"
             description="Build decentralized applications and smart contracts."
             action="Dive into Blockchain"
