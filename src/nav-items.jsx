@@ -1,4 +1,4 @@
-import { HomeIcon, AtomIcon, BoxIcon, GlobeIcon, CodeIcon } from "lucide-react";
+import { HomeIcon, AtomIcon, CubeIcon, GlobeIcon, CodeIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import Resources from "./pages/Resources.jsx";
 
@@ -21,7 +21,7 @@ export const navItems = [
   {
     title: "Blockchain",
     to: "/blockchain",
-    icon: <BoxIcon className="h-4 w-4" />,
+    icon: <CubeIcon className="h-4 w-4" />,
     page: <Resources />,
   },
   {
