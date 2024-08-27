@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AtomIcon, BoxIcon, GlobeIcon, BrainCircuitIcon, CloudIcon, RobotIcon } from 'lucide-react';
+import { AtomIcon, BoxIcon, GlobeIcon, BrainCircuitIcon, CloudIcon, BotIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const TechnologyCard = ({ icon, title, description, action, onClick }) => (
@@ -74,7 +74,7 @@ const Index = () => {
             onClick={() => handleCardClick('/cloud')}
           />
           <TechnologyCard
-            icon={<RobotIcon className="h-6 w-6" />}
+            icon={<BotIcon className="h-6 w-6" />}
             title="Auto Agents & Chatbots"
             description="Create and deploy intelligent agents and chatbots."
             action="Build Agents"
