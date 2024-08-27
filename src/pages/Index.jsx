@@ -25,16 +25,17 @@ const TechnologyCard = ({ icon, title, description, action, onClick }) => (
 const MainChat = () => {
   const [input, setInput] = useState('');
   const [conversation, setConversation] = useState([]);
-  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!input.trim()) return;
 
     setConversation([...conversation, { role: 'user', content: input }]);
 
-    // Simulated AI response generation
+    // TODO: Implement actual API call to your backend
     try {
-      const response = await generateAIResponse(input);
+      const response = await new Promise(resolve => 
+        setTimeout(() => resolve({ role: 'assistant', content: `I understand you want to build: ${input}. How can I help you get started?` }), 1000)
+      );
       setConversation(conv => [...conv, response]);
     } catch (error) {
       console.error("Failed to get a response", error);
@@ -43,37 +44,13 @@ const MainChat = () => {
     setInput('');
   };
 
-  const generateAIResponse = async (userInput) => {
-    // Simulated AI processing
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const lowercaseInput = userInput.toLowerCase();
-    let response = { role: 'assistant', content: '' };
-
-    if (lowercaseInput.includes('quantum')) {
-      response.content = "For quantum computing projects, I recommend starting with Qiskit, an open-source framework for quantum computing. Would you like me to guide you through setting up a quantum environment?";
-    } else if (lowercaseInput.includes('blockchain') || lowercaseInput.includes('web3')) {
-      response.content = "For blockchain and Web3 development, we can start by setting up a development environment with tools like Truffle and Web3.js. Shall we begin by creating a simple smart contract?";
-    } else if (lowercaseInput.includes('ai') || lowercaseInput.includes('machine learning')) {
-      response.content = "For AI and machine learning projects, we can use frameworks like TensorFlow or PyTorch. What specific type of AI model are you interested in building?";
-    } else if (lowercaseInput.includes('cloud')) {
-      response.content = "Cloud integration often involves working with services from providers like AWS, Azure, or Google Cloud. Which cloud provider are you most interested in working with?";
-    } else if (lowercaseInput.includes('chatbot') || lowercaseInput.includes('agent')) {
-      response.content = "To build an intelligent agent or chatbot, we can use natural language processing libraries and conversational AI frameworks. Would you like to start by defining the chatbot's purpose and capabilities?";
-    } else {
-      response.content = `I understand you're interested in building: ${userInput}. To get started, let's break down your project into smaller components. What's the core functionality you'd like to implement first?`;
-    }
-
-    return response;
-  };
-
   return (
     <Card className="w-full mb-8">
       <CardHeader>
         <CardTitle>AI Assistant</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 mb-4" style={{maxHeight: '300px', overflowY: 'auto'}}>
+        <div className="space-y-4 mb-4" style={{maxHeight: '200px', overflowY: 'auto'}}>
           {conversation.map((message, index) => (
             <div key={index} className={`p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}>
               {message.content}
