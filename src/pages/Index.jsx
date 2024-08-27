@@ -1,9 +1,10 @@
 // Update this page (the content is just a fallback if you fail to update the page)
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AtomIcon, BoxIcon, GlobeIcon, BrainCircuitIcon, CloudIcon, RobotIcon } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
+import { AtomIcon, BoxIcon, GlobeIcon, BrainCircuitIcon, CloudIcon, BotIcon, WrenchIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const TechnologyCard = ({ icon, title, description, action, onClick }) => (
@@ -21,6 +22,55 @@ const TechnologyCard = ({ icon, title, description, action, onClick }) => (
   </Card>
 );
 
+const MainChat = () => {
+  const [input, setInput] = useState('');
+  const [conversation, setConversation] = useState([]);
+
+  const handleSubmit = async () => {
+    if (!input.trim()) return;
+
+    setConversation([...conversation, { role: 'user', content: input }]);
+
+    // TODO: Implement actual API call to your backend
+    try {
+      const response = await new Promise(resolve => 
+        setTimeout(() => resolve({ role: 'assistant', content: `I understand you want to build: ${input}. How can I help you get started?` }), 1000)
+      );
+      setConversation(conv => [...conv, response]);
+    } catch (error) {
+      console.error("Failed to get a response", error);
+    }
+
+    setInput('');
+  };
+
+  return (
+    <Card className="w-full mb-8">
+      <CardHeader>
+        <CardTitle>AI Assistant</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4 mb-4" style={{maxHeight: '200px', overflowY: 'auto'}}>
+          {conversation.map((message, index) => (
+            <div key={index} className={`p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}>
+              {message.content}
+            </div>
+          ))}
+        </div>
+        <div className="flex space-x-2">
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Describe what you want to build..."
+            className="flex-grow"
+          />
+          <Button onClick={handleSubmit}>Send</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const Index = () => {
   const navigate = useNavigate();
 
@@ -37,7 +87,15 @@ const Index = () => {
         <p className="text-xl text-white text-center mb-12">
           Harness the power of quantum computing, blockchain, web3, and AI technologies to build the future.
         </p>
+        <MainChat />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <TechnologyCard
+            icon={<WrenchIcon className="h-6 w-6" />}
+            title="Software Builder"
+            description="Build full-stack web and mobile applications with AI assistance."
+            action="Start Building"
+            onClick={() => handleCardClick('/builder')}
+          />
           <TechnologyCard
             icon={<AtomIcon className="h-6 w-6" />}
             title="Quantum Computing"
@@ -74,7 +132,7 @@ const Index = () => {
             onClick={() => handleCardClick('/cloud')}
           />
           <TechnologyCard
-            icon={<RobotIcon className="h-6 w-6" />}
+            icon={<BotIcon className="h-6 w-6" />}
             title="Auto Agents & Chatbots"
             description="Create and deploy intelligent agents and chatbots."
             action="Build Agents"
