@@ -1,4 +1,11 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+/**
+ * Project: Quantum Web3 Agent
+ * Author: Reece Dixon
+ * Copyright: © 2024 Reece Dixon. All rights reserved.
+ * License: This file is part of the Quantum Web3 Agent project, licensed under the GNU Affero General Public License v3.0.
+ *          You should have received a copy of the GNU Affero General Public License along with this program.
+ *          If not, see <http://www.gnu.org/licenses/>.
+ */
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -6,6 +13,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AtomIcon, BoxIcon, GlobeIcon, BrainCircuitIcon, CloudIcon, BotIcon, WrenchIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
 const TechnologyCard = ({ icon, title, description, action, onClick }) => (
   <Card className="w-full">
@@ -25,23 +35,6 @@ const TechnologyCard = ({ icon, title, description, action, onClick }) => (
 const MainChat = () => {
   const [input, setInput] = useState('');
   const [conversation, setConversation] = useState([]);
-  const navigate = useNavigate();
-
-  const handleSubmit = async () => {
-    if (!input.trim()) return;
-
-    setConversation([...conversation, { role: 'user', content: input }]);
-
-    // Simulated AI response generation
-    try {
-      const response = await generateAIResponse(input);
-      setConversation(conv => [...conv, response]);
-    } catch (error) {
-      console.error("Failed to get a response", error);
-    }
-
-    setInput('');
-  };
 
   const generateAIResponse = async (userInput) => {
     // Simulated AI processing
@@ -67,6 +60,24 @@ const MainChat = () => {
     return response;
   };
 
+  const mutation = useMutation({
+    mutationFn: generateAIResponse,
+    onSuccess: (data) => {
+      setConversation(prev => [...prev, data]);
+    },
+    onError: (error) => {
+      console.error("Failed to get a response", error);
+    }
+  });
+
+  const handleSubmit = () => {
+    if (!input.trim()) return;
+
+    setConversation(prev => [...prev, { role: 'user', content: input }]);
+    mutation.mutate(input);
+    setInput('');
+  };
+
   return (
     <Card className="w-full mb-8">
       <CardHeader>
@@ -87,7 +98,9 @@ const MainChat = () => {
             placeholder="Describe what you want to build..."
             className="flex-grow"
           />
-          <Button onClick={handleSubmit}>Send</Button>
+          <Button onClick={handleSubmit} disabled={mutation.isPending}>
+            {mutation.isPending ? 'Sending...' : 'Send'}
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -102,67 +115,71 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-white text-center mb-12">
-          Quantum Web3 AI Agent
-        </h1>
-        <p className="text-xl text-white text-center mb-12">
-          Harness the power of quantum computing, blockchain, web3, and AI technologies to build the future.
-        </p>
-        <MainChat />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <TechnologyCard
-            icon={<WrenchIcon className="h-6 w-6" />}
-            title="Software Builder"
-            description="Build full-stack web and mobile applications with AI assistance."
-            action="Start Building"
-            onClick={() => handleCardClick('/builder')}
-          />
-          <TechnologyCard
-            icon={<AtomIcon className="h-6 w-6" />}
-            title="Quantum Computing"
-            description="Leverage quantum algorithms and IBM Quantum integration."
-            action="Explore Quantum"
-            onClick={() => handleCardClick('/quantum')}
-          />
-          <TechnologyCard
-            icon={<BoxIcon className="h-6 w-6" />}
-            title="Blockchain"
-            description="Build decentralized applications and smart contracts."
-            action="Dive into Blockchain"
-            onClick={() => handleCardClick('/blockchain')}
-          />
-          <TechnologyCard
-            icon={<GlobeIcon className="h-6 w-6" />}
-            title="Web3"
-            description="Create decentralized web applications with customizable backends."
-            action="Discover Web3"
-            onClick={() => handleCardClick('/web3')}
-          />
-          <TechnologyCard
-            icon={<BrainCircuitIcon className="h-6 w-6" />}
-            title="AI/ML Development"
-            description="Train and deploy custom AI models and LLMs."
-            action="Explore AI/ML"
-            onClick={() => handleCardClick('/ai-ml')}
-          />
-          <TechnologyCard
-            icon={<CloudIcon className="h-6 w-6" />}
-            title="Cloud Integration"
-            description="Seamlessly integrate with major cloud providers and services."
-            action="Setup Cloud"
-            onClick={() => handleCardClick('/cloud')}
-          />
-          <TechnologyCard
-            icon={<BotIcon className="h-6 w-6" />}
-            title="Auto Agents & Chatbots"
-            description="Create and deploy intelligent agents and chatbots."
-            action="Build Agents"
-            onClick={() => handleCardClick('/agents')}
-          />
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      <main className="flex-grow bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-4xl font-bold text-white text-center mb-12">
+            Quantum Web3 AI Agent
+          </h1>
+          <p className="text-xl text-white text-center mb-12">
+            Harness the power of quantum computing, blockchain, web3, and AI technologies to build the future.
+          </p>
+          <MainChat />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <TechnologyCard
+              icon={<WrenchIcon className="h-6 w-6" />}
+              title="Software Builder"
+              description="Build full-stack web and mobile applications with AI assistance."
+              action="Start Building"
+              onClick={() => handleCardClick('/builder')}
+            />
+            <TechnologyCard
+              icon={<AtomIcon className="h-6 w-6" />}
+              title="Quantum Computing"
+              description="Leverage quantum algorithms and IBM Quantum integration."
+              action="Explore Quantum"
+              onClick={() => handleCardClick('/quantum')}
+            />
+            <TechnologyCard
+              icon={<BoxIcon className="h-6 w-6" />}
+              title="Blockchain"
+              description="Build decentralized applications and smart contracts."
+              action="Dive into Blockchain"
+              onClick={() => handleCardClick('/blockchain')}
+            />
+            <TechnologyCard
+              icon={<GlobeIcon className="h-6 w-6" />}
+              title="Web3"
+              description="Create decentralized web applications with customizable backends."
+              action="Discover Web3"
+              onClick={() => handleCardClick('/web3')}
+            />
+            <TechnologyCard
+              icon={<BrainCircuitIcon className="h-6 w-6" />}
+              title="AI/ML Development"
+              description="Train and deploy custom AI models and LLMs."
+              action="Explore AI/ML"
+              onClick={() => handleCardClick('/ai-ml')}
+            />
+            <TechnologyCard
+              icon={<CloudIcon className="h-6 w-6" />}
+              title="Cloud Integration"
+              description="Seamlessly integrate with major cloud providers and services."
+              action="Setup Cloud"
+              onClick={() => handleCardClick('/cloud')}
+            />
+            <TechnologyCard
+              icon={<BotIcon className="h-6 w-6" />}
+              title="Auto Agents & Chatbots"
+              description="Create and deploy intelligent agents and chatbots."
+              action="Build Agents"
+              onClick={() => handleCardClick('/agents')}
+            />
+          </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };
