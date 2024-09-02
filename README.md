@@ -1,72 +1,103 @@
-# Welcome to your GPT Engineer project
 
-## Project info
+# 🌐 Quantum Web3 Agent
 
-**Project**: quantum-web3-agent
+## 🚀 Overview
 
-**URL**: https://run.gptengineer.app/projects/60f0af7e-8159-44b9-916a-b6f08047e683/improve
+**Quantum Web3 Agent** is a next-generation SaaS application that merges the cutting-edge fields of quantum computing, Web3 technologies, and AI. This platform offers users two powerful AI services:
 
-## How can I edit this code?
+- **🆓 Free AI Service:** Harness the power of open-source models like GPT-J.
+- **💎 Premium AI Service:** Unlock the advanced capabilities of models like OpenAI's GPT-4, available through a subscription plan.
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use GPT Engineer**
+- **🤖 AI Integration:** Seamlessly generate text using either free or premium AI models.
+- **🔒 Secure Authentication:** Protect your data with JWT-based authentication and role-based access control.
+- **💰 Subscription Management:** Easily upgrade to premium AI services via a Stripe-powered subscription system.
+- **☁️ Scalable Deployment:** The app is ready for AWS deployment, complete with CI/CD integration.
 
-Simply visit the GPT Engineer project at [GPT Engineer](https://run.gptengineer.app/projects/60f0af7e-8159-44b9-916a-b6f08047e683/improve) and start prompting.
 
-Changes made via gptengineer.app will be committed automatically to this repo.
+## 🔧 Setup Instructions
 
-**Use your preferred IDE**
+### 1. 📥 Clone the Repository
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in the GPT Engineer UI.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-git clone https://github.com/GPT-Engineer-App/quantum-web3-agent.git
+```bash
+git clone https://github.com/redx94/quantum-web3-agent.git
 cd quantum-web3-agent
-npm i
-
-# This will run a dev server with auto reloading and an instant preview.
-npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 2. ⚙️ Backend Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+#### Install Dependencies
 
-**Use GitHub Codespaces**
+```bash
+cd backend
+sh setup.sh
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+#### Environment Variables
 
-## What technologies are used for this project?
+Create a `.env` file in the `backend` directory and populate it with the following:
 
-This project is built with .
+```plaintext
+POSTGRES_URL=your_postgresql_connection_string
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+PREMIUM_API_KEY=your_openai_api_key
+```
 
-- Vite
-- React
-- shadcn-ui
-- Tailwind CSS
+### 3. 🎨 Frontend Setup
 
-## How can I deploy this project?
+Your frontend is already set up. If any adjustments are needed to integrate the new backend endpoints, update the relevant API calls to match the new routes.
 
-All GPT Engineer projects can be deployed directly via the GPT Engineer app.
+### 4. 🚀 Deployment
 
-Simply visit your project at [GPT Engineer](https://run.gptengineer.app/projects/60f0af7e-8159-44b9-916a-b6f08047e683/improve) and click on Share -> Publish.
+#### AWS Elastic Beanstalk
 
-## I want to use a custom domain - is that possible?
+Ensure your AWS credentials are configured in GitHub secrets (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`). Push your changes to trigger the CI/CD pipeline:
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain, then we recommend GitHub Pages.
+```bash
+git add .
+git commit -m "🚀 Deploy updated project"
+git push origin main
+```
 
-To use GitHub Pages you will need to follow these steps:
+### 5. 🔥 Usage
 
-- Deploy your project using GitHub Pages - instructions [here](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site)
-- Configure a custom domain for your GitHub Pages site - instructions [here](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
+#### 🆓 Free AI Service
+
+Send POST requests to the `/ai/free` endpoint. Ensure the user is authenticated and has the "free" role:
+
+```json
+{
+  "prompt": "Your text prompt here"
+}
+```
+
+#### 💎 Premium AI Service
+
+For the premium service, users must have a "premium" role, which they can acquire by subscribing via Stripe. Send POST requests to the `/ai/premium` endpoint:
+
+```json
+{
+  "prompt": "Your premium text prompt here"
+}
+```
+
+### 6. 💳 Subscription Management
+
+Users can subscribe to the premium service through the `/subscribe` endpoint. Make sure the Stripe configuration in the backend is set up correctly with your plan ID.
+
+## 🤝 Contributing
+
+Contributions are always welcome! Please submit a pull request with a detailed description of your changes, and we’ll review it as soon as possible.
+
+## 📜 License
+
+This project is licensed under the **MIT License**. Feel free to use, modify, and distribute as you see fit.
+
+---
+
+### 📬 Contact
+
+For any inquiries or support, reach out to us at [reece.qtt@gmail.com]. We’d love to hear from you!
